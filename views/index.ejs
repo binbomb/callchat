@@ -1,0 +1,120 @@
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://webrtc.github.io/adapter/adapter-latest.jss"></script>
+	<script>
+		  var socket = io.connect('https://chat123chat.herokuapp.com/');
+		
+			$(document).ready(function(){
+				$("div[class*='send']").click(function(){
+					socket.emit("a-s",$("input[class*='w3-input']").val()+" "+socket.id+" "+$("#name_a").val());
+					 $('#m').val('');
+				});
+				$("#reg").click(function(){
+					alert("dang ky");
+					
+					socket.emit('reg', $("#name_a").val());
+				});
+				$("#send_room").click(function(){
+					
+					
+					socket.emit('to-room', $("#chatroom").val());
+				});
+				send_room
+				$("#users_").click(function(){
+				alert("goi adnah sach");
+					socket.emit("getalluer","");
+					 $('#users_').val('');
+				});
+				$("#room_cre").click(function(){
+				
+					socket.emit("create-room",$("#room_").val());
+					
+				})
+				socket.on('a_chat_message', function(msg){
+						name=msg.substring(msg.lastIndexOf(" "),msg.length+1);
+						text=msg.substring(0,msg.lastIndexOf(" "));
+						text=text.substring(0,text.lastIndexOf(" "));
+						
+					   $('<div/>').text(text).prepend($('<li/>').text(name+": ")).appendTo($("#messgesDiv"));
+						$("#messgesDiv")[0].scrollTop = $("#messgesDiv")[0].scrollHeight;
+						
+					});
+				socket.on('alluers',function(users){
+				console.log(users);
+				if(users.length<1) alert("rong");
+				else{
+						users.forEach(function(user){
+							//$("#users_").append(" <div\> "+user);
+							('<div/>').text(user).appendTo($("#users_"));;
+						});
+						
+					}	
+					
+				});	
+				socket.on("s-to-r",function(data){
+					data.map(function(r){
+					
+					$("#room_list").append("<h4\>"+r);
+					});
+				});
+				socket.on("s-t-idroom",function(data){
+					$("#room_now").html(data);
+				});
+				socket.on("room-cliet",function(data){
+					$("#room_now").html(data);
+				});
+				
+				
+			});
+	 </script>
+</head>
+
+<body>
+<div class="w3-col m4 l3">
+	<h1>vao thoi</h1>
+<center>	
+	<div id="users_">
+            <h3>danh sach online</h3>
+    </div>
+
+</center>
+	<div id="messgesDiv">
+            <center><h3>Message</h3></center>
+    </div>
+	
+	<label>First Name</label>
+	<input id="name_a" type="text">
+	<input class="w3-input" type="text">
+	<div class="w3-button w3-circle w3-teal send">send</div>
+	
+	<div class="w3-button  w3-teal w3-cell-top" id="reg">regi</div>
+</div>	
+<div class="w3-col m4 l4">
+	<video id="videostream" width="400px" controls>
+            
+    </video>
+		<input class="w3-input" id="room_" type="text">
+	<div class="w3-button w3-circle w3-teal" id="room_cre">tao room</div>
+	<input class="w3-input" id="chatroom" type="text">
+	<div class="w3-button w3-circle w3-teal" id="send_room">send</div>
+	<div class="w3-button w3-circle w3-teal" id="loadata">load</div>
+	<div class=" w3-teal" id="data"></div>
+	<textarea rows="5" cols="50" id="tokenstream" placeholder="nhap code de ket noi"></textarea>
+	<div class="w3-button w3-circle w3-teal" id="connectBtn">connect</div>
+	<video  id="dataother"  width="400px" controls>
+</div>
+<div class="w3-col m4 l5">
+		
+	<div class=" w3-tea w3-col m4 l6" id="room_list">danh sach room</div>
+	<div class=" w3-tea w3-col m4 l6" id="room_now">room</div>
+</div>
+</body>
+<script>
+
+</script>
+<script src="bundle.js"></script>
+</html>
