@@ -5,14 +5,33 @@ const $ =require('jquery')
 const uid= require('uid')
 
 const adapter=require('webrtc-adapter');
-const config={host:'callchatbb.herokuapp.com',port:443,secure:true,key:'peerjs'}
+
+
+var cfice;
+
+$.ajax ({
+             url: "https://global.xirsys.net/_turn/MyFirstApp/",
+             type: "PUT",
+             async: false,
+             headers: {
+               "Authorization": "Basic " + btoa("binbomb:351ef78a-f83d-11e8-9547-0242ac110003")
+             },
+             success: function (res){
+              // console.log("ICE List: "+JSON.stringify( res.v.iceServers));
+			   cfice=res.v.iceServers
+             }
+         });
+		 console.log(cfice)
+const config={host:'callchatbb.herokuapp.com',port:443,secure:true,key:'peerjs',config:cfice}
+		 
 const peer= new Peer(getpeer(),config)
+console.log(peer)
 function getpeer(){
 	var id=uid(10)
 	$('#data').append(id)
 	return id
 }
-console.log(peer)
+
 /*
 const peer= new Peer(getPeer(),config)
 console.log(peer)
@@ -42,13 +61,27 @@ if (adapter.browserDetails.browser == 'chrome') {
     })
   })
 }*/
+
+var objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: false}) 
+	navigator.mediaDevices.getUserMedia({audio:true,video: true})
+		.then(()=>{
+			objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: true}) 
+		})
+		.catch(function(err) {
+					console.log('ko co webcam ' + err);
+				  /* handle the error 		var audio = document.getElementById('videostream');
+					  audio.srcObject = stream;
+					  audio.onloadedmetadata = function(e) {
+					  audio.play();}*/
+		});
+	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
   // use it.
   console.log("ok")
 		  try {
 		 //navigator.mediaDevices.getUserMedia({audio:true,  video: { width: 400, height: 300 }})
-			navigator.mediaDevices.getUserMedia({audio:true,video: false})
-			.then(function(stream) {
+			//navigator.mediaDevices.getUserMedia({audio:true,video: false})
+			objectStream.then(function(stream) {
 				
 				$('#connectBtn').click(()=>{
 					
@@ -104,10 +137,11 @@ if ('getDisplayMedia' in window.navigator) {
 }
 
  //navigator.getDisplayMedia({video: true, audio: false}, function(stream) {
-	peer.on('call', function(call) {
+		peer.on('call', function(call) {
 		console.log("nhna dc cuoc goi")
-	  navigator.mediaDevices.getUserMedia({video: false, audio: true}).then(function(stream) {
-		  console.log(stream)
+		//navigator.mediaDevices.getUserMedia({video: false, audio: true})
+		objectStream.then(function(stream) {
+		console.log(stream)
 		playVideo(stream,'videostream')
 		call.answer(stream); // Answer the call with an A/V stream.
 		

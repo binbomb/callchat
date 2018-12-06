@@ -11,8 +11,16 @@
 			$(document).ready(function(){
 				$("div[class*='send']").click(function(){
 					socket.emit("a-s",$("input[class*='w3-input']").val()+" "+socket.id+" "+$("#name_a").val());
-					 $('#m').val('');
+					 $("input[class*='send']").val('');
 				});
+				$("input[class*='send']").bind('keypress', function(e) {
+						console.log(e)
+						if(e.keyCode==13){
+							socket.emit("a-s",$("input[class*='w3-input']").val()+" "+socket.id+" "+$("#name_a").val());
+							$("input[class*='send']").val('');
+							// Enter pressed... do anything here...
+						}
+					});
 				$("#reg").click(function(){
 					alert("dang ky");
 					
@@ -88,7 +96,7 @@
 	
 	<label>First Name</label>
 	<input id="name_a" type="text">
-	<input class="w3-input" type="text">
+	<input class="w3-input send" type="text">
 	<div class="w3-button w3-circle w3-teal send">send</div>
 	
 	<div class="w3-button  w3-teal w3-cell-top" id="reg">regi</div>
@@ -107,7 +115,7 @@
 	<div class="w3-button w3-circle w3-teal" id="connectBtn">connect</div>
 	<video  id="dataother"  width="400px" controls>
 </div>
-<div class="w3-col m4 l5">
+<div class="w3-col m4 l5" >
 		
 	<div class=" w3-tea w3-col m4 l6" id="room_list">danh sach room</div>
 	<div class=" w3-tea w3-col m4 l6" id="room_now">room</div>
