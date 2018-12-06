@@ -6,7 +6,7 @@ const uid= require('uid')
 
 const adapter=require('webrtc-adapter');
 
-
+	 
 var cfice;
 
 $.ajax ({
@@ -23,11 +23,18 @@ $.ajax ({
          });
 		 console.log(cfice)
 const config={host:'callchatbb.herokuapp.com',port:443,secure:true,key:'peerjs',config:cfice}
-		 
-const peer= new Peer(getpeer(),config)
+const peer= new Peer(getpeer() ,config)
 console.log(peer)
+const peeraudio= new Peer(getpeer() ,config)
+console.log(peeraudio)
+peer.on('connection',function(conn){
+	conn.on('data',function(data){
+		console.log(data)
+	})
+})
 function getpeer(){
 	var id=uid(10)
+	console.log(id)
 	$('#data').append(id)
 	return id
 }
@@ -62,7 +69,7 @@ if (adapter.browserDetails.browser == 'chrome') {
   })
 }*/
 
-var objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: false}) 
+var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: false}) 
 	navigator.mediaDevices.getUserMedia({audio:true,video: true})
 		.then(()=>{
 			objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: true}) 
@@ -74,59 +81,55 @@ var objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: false})
 					  audio.onloadedmetadata = function(e) {
 					  audio.play();}*/
 		});
-	objectStream=navigator.getDisplayMedia({video: true, audio: false})
+var	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
   // use it.
   console.log("ok")
 		  try {
 		 //navigator.mediaDevices.getUserMedia({audio:true,  video: { width: 400, height: 300 }})
 			//navigator.mediaDevices.getUserMedia({audio:true,video: false})
-			objectStream.then(function(stream) {
-				
 				$('#connectBtn').click(()=>{
-					
-					const idother=$('#tokenstream').val()
-					//console.log(idother)
+					console.log("sao ko thay gi`")
+					objectStream.then(function(stream) {
+				
+
+					var idother=$('#tokenstream').val().substring(0,10)
+					console.log(idother)
 					//console.log(dataother)
 					playVideo(stream,'videostream')
 					const call= peer.call(idother,stream)
 					call.on('stream',remotestream=> playVideo(remotestream,'dataother'))
-				});
+				
 
-				
-			  /* use the stream 
-				//console.log(playVideo)
-				 playVideo(stream,'videostream')
-				var p = new Peer({ initiator: location.hash === '#1', trickle: false,stream })
-				p.on('signal', function (data) {
-				  console.log('SIGNAL', JSON.stringify(data))
-				  document.querySelector('#data').textContent = JSON.stringify(data)
-				  
-				})
-				$('#connectBtn').click(()=>{
-					
-					const dataother=JSON.parse($('#tokenstream').val())
-					//console.log(dataother)
-					p.signal(dataother)	
-				});
-				p.on('stream',streamother => playVideo(streamother,'dataother'))	
-				p.on('connect',()=>{
-						setInterval(()=>p.send(Math.random()), 3000)
 					})
-				
-				p.on('data',(data)=>{
-						console.log(data)
-					})	
+					.catch(function(err) {
+						console.log('Unable to acquire screen capture: ' + err);
+					  /* handle the error 		var audio = document.getElementById('videostream');
+						  audio.srcObject = stream;
+						  audio.onloadedmetadata = function(e) {
+						  audio.play();}*/
+					});
+					objectStreamaudio.then(function(stream) {
 					
-					*/
-			})
-			.catch(function(err) {
-				console.log('Unable to acquire screen capture: ' + err);
-			  /* handle the error 		var audio = document.getElementById('videostream');
-				  audio.srcObject = stream;
-				  audio.onloadedmetadata = function(e) {
-				  audio.play();}*/
-			});
+					idother=$('#tokenstream').val().substring(10)
+					console.log(idother)
+				//	console.log(dataother)
+					playVideo(stream,'audiostream')
+					const call= peeraudio.call(idother,stream)
+					call.on('stream',remotestream=> playVideo(remotestream,'audiother'))
+
+		
+					})
+					.catch(function(err) {
+						console.log('erroe stream audio ' + err);
+
+					});
+
+				});
+			
+			
+		
+
 		 
 		} catch (e) {
 		  console.log('Unable to acquire screen capture: ' + e);
@@ -138,7 +141,7 @@ if ('getDisplayMedia' in window.navigator) {
 
  //navigator.getDisplayMedia({video: true, audio: false}, function(stream) {
 		peer.on('call', function(call) {
-		console.log("nhna dc cuoc goi")
+		console.log("nhna dc cuoc goi video")	
 		//navigator.mediaDevices.getUserMedia({video: false, audio: true})
 		objectStream.then(function(stream) {
 		console.log(stream)
@@ -146,6 +149,27 @@ if ('getDisplayMedia' in window.navigator) {
 		call.answer(stream); // Answer the call with an A/V stream.
 		
 		call.on('stream',remotestream=> playVideo(remotestream,'dataother'))
+		
+	  }).catch(function(err) {
+				console.log('Unable to acquire screen capture: ' + err);
+			  /* handle the error 		var audio = document.getElementById('videostream');
+				  audio.srcObject = stream;
+				  audio.onloadedmetadata = function(e) {
+				  audio.play();}*/
+			});
+	});
+	// navigator.mediaDevices.getUserMedia({video: false, audio: true})
+	
+	
+	peeraudio.on('call', function(call) {
+	console.log("nhna dc cuoc goi")	
+		
+		objectStreamaudio.then(function(stream) {
+		console.log(stream)
+		playVideo(stream,'audiostream')
+		call.answer(stream); // Answer the call with an A/V stream.
+		
+		call.on('stream',remotestream=> playVideo(remotestream,'audiother'))
 		
 	  }).catch(function(err) {
 				console.log('Unable to acquire screen capture: ' + err);
