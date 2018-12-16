@@ -79,6 +79,7 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 		})
 		.catch(function(err) {
 					console.log('ko co webcam ' + err);
+					objectStream=navigator.getDisplayMedia({video: true, audio: false})
 				  /* handle the error 		var audio = document.getElementById('videostream');
 					  audio.srcObject = stream;
 					  audio.onloadedmetadata = function(e) {
