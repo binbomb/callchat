@@ -74,6 +74,8 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 		.then(()=>{
 			console.log("hinh nhu ko cam dung dc")
 			objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: true}) 
+			
+			console.log(objectStream)
 		})
 		.catch(function(err) {
 					console.log('ko co webcam ' + err);
