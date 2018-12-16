@@ -81,7 +81,10 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 					  audio.onloadedmetadata = function(e) {
 					  audio.play();}*/
 		});
-var	objectStream=navigator.getDisplayMedia({video: true, audio: false})
+		
+var	objectStream;
+if(navigator.getDisplayMedia({video: true, audio: false}))
+	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
   // use it.
   console.log("ok")
