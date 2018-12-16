@@ -72,6 +72,7 @@ if (adapter.browserDetails.browser == 'chrome') {
 var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: false}) 
 	navigator.mediaDevices.getUserMedia({audio:true,video: true})
 		.then(()=>{
+			console.log("hinh nhu ko cam dung dc")
 			objectStream=navigator.mediaDevices.getUserMedia({audio:true,video: true}) 
 		})
 		.catch(function(err) {
@@ -83,6 +84,7 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 		});
 		
 var	objectStream;
+console.log(navigator.getDisplayMedia({video: true, audio: false}))
 if(navigator.getDisplayMedia({video: true, audio: false}))
 	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
