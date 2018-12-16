@@ -68,7 +68,7 @@ if (adapter.browserDetails.browser == 'chrome') {
     })
   })
 }*/
-
+var	objectStream;
 var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: false}) 
 	navigator.mediaDevices.getUserMedia({audio:true,video: true})
 		.then(()=>{
@@ -83,9 +83,9 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 					  audio.play();}*/
 		});
 		
-var	objectStream;
-console.log(navigator.getDisplayMedia({video: true, audio: false}))
-if(navigator.getDisplayMedia({video: true, audio: false}))
+
+console.log(objectStream)
+if(!objectStream)
 	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
   // use it.
