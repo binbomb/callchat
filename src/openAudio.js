@@ -88,7 +88,7 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 
 console.log(objectStream)
 if(!objectStream)
-	objectStream=navigator.getDisplayMedia({video: true, audio: false})
+//	objectStream=navigator.getDisplayMedia({video: true, audio: false})
 if ('getDisplayMedia' in window.navigator) {
   // use it.
   console.log("ok")
