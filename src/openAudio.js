@@ -86,10 +86,10 @@ var objectStreamaudio=navigator.mediaDevices.getUserMedia({audio:true,video: fal
 		});
 		
 
-console.log(objectStream)
-if(!objectStream)
+console.log("object stream "+objectStream)
+//if(!objectStream)
 //	objectStream=navigator.getDisplayMedia({video: true, audio: false})
-if ('getDisplayMedia' in window.navigator) {
+//if ('getDisplayMedia' in window.navigator) {
   // use it.
   console.log("ok")
 		  try {
@@ -141,10 +141,11 @@ if ('getDisplayMedia' in window.navigator) {
 		} catch (e) {
 		  console.log('Unable to acquire screen capture: ' + e);
 		}
-} else {
+//} else {
+//	navigator.mediaDevices.getDisplayMedia({video: true, audio: false})
   // fall back to extension way
-  console.log("false")
-}
+ // console.log("khong stream man hinh dc")
+//}
 
  //navigator.getDisplayMedia({video: true, audio: false}, function(stream) {
 		peer.on('call', function(call) {
